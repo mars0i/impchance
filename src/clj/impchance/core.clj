@@ -16,14 +16,14 @@
   (inc (r/rand-idx rng top)))
 
 (defn choose-p
-  "Randomly chooses an element from ps with equal probability for all elements."
+  "Randomly chooses an element from ps with equal probability for each element."
   [rng ps]
   (ru/sample-one rng ps))
 
 (defn bernoulli
   "Returns a 0 or 1 with probability p for 1."
   [rng p]
-  (if (< (r/next-double rng) p) 0 1))
+  (if (< (r/next-double rng) p) 1 0))
 
 (defn make-n-outcomes
   "Returns a sequence of n 0's and 1's with a probability randomly chosen

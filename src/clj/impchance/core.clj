@@ -54,6 +54,25 @@
   []
   (make-outcomes my-rng my-top my-ps))
 
+(defn relative-frequency
+  "General function for calculating the relative frequency of elements
+  that satisfy pred."
+  [pred os]
+  (float
+    (/ (reduce (fn [count-so-far x]
+                 (if (pred x)
+                   (inc count-so-far)
+                   count-so-far))
+               0 os)
+       (count os))))
+
+(defn relf
+  "Calculate relative frequency of 1 in seq consisting only of 0's and 1s."
+  [os]
+  (float
+    (/ (reduce + os)
+       (count os))))
+
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]

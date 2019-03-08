@@ -32,7 +32,9 @@
 
 (def i46-elts
   (let [means (map i46-means pos-ints)]
-    (map (fn [n' xn' xn] (- (* (inc n') xn) (* n' xn'))) ;; let "'" say -1, so n' = n-1, xn' = x_{n-1}:
+    (map (fn [n' xn' xn]  ;; let "'" say -1, so n' = n-1, xn' = x_{n-1}:
+           (- (* (inc n') xn)
+              (* n' xn')))
          pos-ints
          i46-means
          (drop 1 i46-means))))

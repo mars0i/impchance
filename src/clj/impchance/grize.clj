@@ -18,5 +18,10 @@
         [prev-power e]
         (recur e power)))))
 
-;; TODO: the rest
-
+(defn i46
+  "Return the average from 1 to n as specified in example I.4.6."
+  [n]
+  (let [[pow exponent] (lesser-power 2 n)
+        m (- n pow)
+        s (if (even? exponent) 2 1)]
+    (float (- s (/ m pow)))))

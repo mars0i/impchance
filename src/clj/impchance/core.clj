@@ -1,6 +1,6 @@
 (ns impchance.core
-  (:require [impchance.random :as r]
-           [impchance.random-utils :as ru])
+  (:require [utils.random :as r]
+            [utils.random-utils :as ru])
   (:gen-class))
 
 (def my-rng (r/make-rng))

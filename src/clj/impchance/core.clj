@@ -1,5 +1,5 @@
 (ns impchance.core
-  (require [impchance.random :as r]
+  (:require [impchance.random :as r]
            [impchance.random-utils :as ru])
   (:gen-class))
 

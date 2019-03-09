@@ -19,11 +19,12 @@
   "Returns a sequence containing the (1) maximum value of base raised to a 
   positive integer <= n, and (2) the integer to which base was raised."
   [base n]
-  (loop [e 0 prev-power 0]
-    (let [power (expt base e)]
+  (loop [prev-e -1 prev-power 0]
+    (let [e (inc prev-e)
+          power (expt base e)]
       (if (> power n)
-        [prev-power e]
-        (recur (inc e) power)))))
+        [prev-power prev-e] ; meaningless the first time
+        (recur e power)))))
 
 (defn i46-mean
   "Return the average from 1 to n as specified in example I.4.6 from 
@@ -34,7 +35,6 @@
         s (if (even? exponent) 2 1)]
     (float (- s (/ m pow)))))
 
-;; There may be a more efficient way to do this, but this is good enough.
 (def i46-means
   "A lazy sequence of averages from 1 to n as n increases, as specified 
   in example I.4.6 from Grize's 1984 dissertation.  These means are calculated 

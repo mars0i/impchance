@@ -19,12 +19,11 @@
   "Returns a sequence containing the (1) maximum value of base raised to a 
   positive integer <= n, and (2) the integer to which base was raised."
   [base n]
-  (loop [prev-e -1 prev-power 0]
-    (let [e (inc prev-e)
-          power (expt base e)]
+  (loop [e 0 prev-power 0]
+    (let [power (expt base e)]
       (if (> power n)
         [prev-power e]
-        (recur e power)))))
+        (recur (inc e) power)))))
 
 (defn i46-mean
   "Return the average from 1 to n as specified in example I.4.6 from 

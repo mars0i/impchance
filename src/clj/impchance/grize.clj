@@ -4,6 +4,8 @@
 ;; FLICKER NOISE
 ;; Yves-Laurent Grize
 ;; May 1984
+;; Cornell University Dissertation
+;; supervised by Terrence Fine
 
 (ns impchance.grize
   (:use clojure.math.numeric-tower))
@@ -33,24 +35,51 @@
   (let [[pow exponent] (lesser-power 2 n)
         m (- n pow)
         s (if (even? exponent) 2 1)]
-    (float (- s (/ m pow)))))
+    (- s (/ m pow))))
+
+(def i46-means-rat
+  "A lazy sequence of rational averages from 1 to n as n increases, as 
+  specified in example I.4.6 from Grize's 1984 dissertation.  These means 
+  are calculated using the definition in the text rather than being 
+  computed by averaging values from 1 to n."
+  (map i46-mean pos-ints))
 
 (def i46-means
-  "A lazy sequence of averages from 1 to n as n increases, as specified 
+  "A lazy sequence of float averages from 1 to n as n increases, as specified 
   in example I.4.6 from Grize's 1984 dissertation.  These means are calculated 
   using the definition in the text rather than being computed by averaging 
   values from 1 to n."
-  (map i46-mean pos-ints))
+  (map (comp float i46-mean) pos-ints))
 
-(def i46-elts
-  "A lazy sequence of values from 1 to n as n increases, as specified 
-  in example I.4.6 from Grize's 1984 dissertation.  As specified in the
-  text, the values are calculated as weighted differences between
-  subsequent means."
-  ;; See Grize 1984 for explanation:
+(defn elts-from-means
+  "Generate a lazy sequence of values from 1 to n as n increases, defined 
+  from a sequence of means as weighted differences between them.  See e.g.
+  p. 17 in Grize's 1984 dissertation."
+  [means]
   (map (fn [n' xn' xn]  ;; let "'" say -1, so n' = n-1, xn' = x_{n-1}:
          (- (* (inc n') xn)
             (* n' xn')))
        pos-ints
-       i46-means
-       (drop 1 i46-means)))
+       means
+       (drop 1 means)))
+
+(def i46-elts 
+  "A lazy sequence of values as n increases, as specified by example 
+  I.4.6 (p. 17) from Grize's 1984 dissertation, defined from a sequence 
+  of means as weighted differences between them."
+  (elts-from-means i46-means))
+
+(defn allan-vars-from-means
+  "Given a sequence of means, return the corresponding sequence of Allan
+  variances, as in definition I.3.2 on page 10 of Grize's 1984 dissertation."
+  [means]
+  (map (fn [x-n x-2n]
+         (let [d (- x-n x-2n)]
+           (* 2 d d)))
+       means
+       (take-nth 2 means)))
+
+(def i46-allan-vars 
+  "A lazy sequence of Allan variances for the sequence defined in
+  example I.4.6 (p. 17) from Grize's 1984 dissertation."
+  (allan-vars-from-means i46-means))

@@ -37,8 +37,8 @@
         s (if (even? exponent) 2 1)]
     (- s (/ m pow))))
 
-(def i46-means-rat
-  "A lazy sequence of rational averages from 1 to n as n increases, as 
+(def i46-means-ratio
+  "A lazy sequence of ratio averages from 1 to n as n increases, as 
   specified in example I.4.6 from Grize's 1984 dissertation.  These means 
   are calculated using the definition in the text rather than being 
   computed by averaging values from 1 to n."
@@ -63,8 +63,14 @@
        means
        (drop 1 means)))
 
+(def i46-elts-ratio
+  "A lazy sequence of ratio values as n increases, as specified by example 
+  I.4.6 (p. 17) from Grize's 1984 dissertation, defined from a sequence 
+  of means as weighted differences between them."
+  (elts-from-means i46-means-ratio))
+
 (def i46-elts 
-  "A lazy sequence of values as n increases, as specified by example 
+  "A lazy sequence of float values as n increases, as specified by example 
   I.4.6 (p. 17) from Grize's 1984 dissertation, defined from a sequence 
   of means as weighted differences between them."
   (elts-from-means i46-means))
@@ -79,7 +85,12 @@
        means
        (take-nth 2 means)))
 
+(def i46-allan-vars-ratio 
+  "A lazy sequence of ratio Allan-variances for the sequence defined in
+  example I.4.6 (p. 17) from Grize's 1984 dissertation."
+  (allan-vars-from-means i46-means-ratio))
+
 (def i46-allan-vars 
-  "A lazy sequence of Allan variances for the sequence defined in
+  "A lazy sequence of float Allan-variances for the sequence defined in
   example I.4.6 (p. 17) from Grize's 1984 dissertation."
   (allan-vars-from-means i46-means))

@@ -19,20 +19,22 @@
 (defn simple-replot
   "Given plot object xyp, adds the values in ys in relation to x values from 0
   to the length of ys, displays the modified plot object, and returns it.  If
-  n is provided, no more than the first n elements of ys will be used."
-  ([xyp ys] (let [xs (range (count ys))]
-              (ic/view xyp)
-              (ich/add-lines xyp xs ys)))
-  ([xyp n ys] (simple-replot xyp (take n ys))))
+  n is provided, no more than the first n elements of ys will be used.  points?
+  specifies whether to add point markers to the curve at each data point."
+  ([xyp n ys points?] (let [xs (range n)]
+                        (ic/view xyp)
+                        (ich/add-lines xyp xs ys :points points?))))
 
 (defn simple-plot
   "Displays a line plot of the values in ys in relation to x values from 
   0 to the length of ys, and returns the plot object.  A new xy-plot object
   is generated and returned.  If n is provided, no more than the first n
-  elements of ys will be used."
-  ([ys] (simple-replot (ich/xy-plot) ys))
-  ([n ys & config-params]
-    (simple-replot (apply ich/xy-plot config-params) n ys)))
+  elements of ys will be used.  points? specifies whether to add point 
+  markers to the curve at each data point.  If not provided, it is treated
+  as false."
+  ([ys] (simple-replot (ich/xy-plot) (count ys) ys false))
+  ([n ys] (simple-replot (ich/xy-plot) n ys false))
+  ([n ys points?] (simple-replot (ich/xy-plot) n ys points?)))
 
 (defn mean
   [xs]

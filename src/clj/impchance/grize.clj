@@ -54,14 +54,13 @@
 (defn elts-from-means
   "Generate a lazy sequence of values from 1 to n as n increases, defined 
   from a sequence of means as weighted differences between them.  See e.g.
-  p. 17 in Grize's 1984 dissertation."
+  p. 17 in Grize's 1984 dissertation.  Also assumes that the first element
+  should be the first mean, although Grize only defined elements after
+  the first."
   [means]
-  (map (fn [n' xn' xn]  ;; let "'" say -1, so n' = n-1, xn' = x_{n-1}:
-         (- (* (inc n') xn)
-            (* n' xn')))
-       pos-ints
-       means
-       (drop 1 means)))
+  (let [weighted-means (map * pos-ints means)]
+    (cons (first means)
+          (map - (drop 1 weighted-means) weighted-means))))
 
 (def i46-elts-ratio
   "A lazy sequence of ratio values as n increases, as specified by example 

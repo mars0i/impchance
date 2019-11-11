@@ -32,9 +32,10 @@
   ([xyp n ys] (simple-replot xyp (take n ys))))
 
 (defn simple-plot
-  "Displays a plot of the values in ys in relation to x values from 0 to the length
-  of ys, and returns the plot object.  A new xy-plot object is generated and returned.
-  If n is provided, no more than the first n elements of ys will be used."
+  "Displays a plot of the values in ys in relation to x values from 0 to
+  the length of ys, and returns the plot object.  A new xy-plot object
+  is generated and returned.  If n is provided, no more than the first n
+  elements of ys will be used."
   ([ys] (simple-replot (ich/xy-plot) ys))
   ([n ys] (simple-replot (ich/xy-plot) n ys)))
 

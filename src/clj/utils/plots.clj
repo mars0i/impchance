@@ -173,7 +173,3 @@
   [mn sample-size]
   (/ (mean-product mn)
      (inc sample-size)))
-
-(defn mean
-  [xs]
-  (/ (reduce + xs) (count xs)))

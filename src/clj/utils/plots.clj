@@ -67,19 +67,35 @@
   "Given plot object xyp, adds the values in ys in relation to x values from 0
   to the length of ys, displays the modified plot object, and returns it.  If n
   is provided, no more than the first n elements of ys will be used."
-  ([xyp ys] (let [xs (range (count ys))]
+  ([xyp plot-fn ys] (let [xs (range (count ys))]
               (ic/view xyp)
-              (ich/add-lines xyp xs ys)))
-  ([xyp n ys] (simple-replot xyp (take n ys))))
+              (plot-fn xyp xs ys)))
+  ([xyp plot-fn n ys] (simple-replot xyp plot-fn (take n ys))))
 
-(defn simple-plot
+;; "*" versions of add-points and add-lines are function wrappers for
+;; the original macros.
+
+(defn simple-line-plot
   "Displays a plot of the values in ys in relation to x values from 0 to
   the length of ys, and returns the plot object.  A new xy-plot object
   is generated and returned.  If n is provided, no more than the first n
   elements of ys will be used."
-  ([ys] (simple-replot (ich/xy-plot) ys))
-  ([n ys] (simple-replot (ich/xy-plot) n ys)))
+  ([ys] (simple-replot (ich/xy-plot) ich/add-lines* ys))
+  ([n ys] (simple-replot (ich/xy-plot) ich/add-lines* n ys)))
 
+;; setting point size didn't work with the simple-replot scheme above;
+;; have to use custom code for this
+(defn simple-point-plot
+  "Displays a plot of the values in ys in relation to x values from 0 to
+  the length of ys, and returns the plot object.  A new scatter-plot object
+  is generated and returned.  No more than the first n elements will be used."
+  [n ys & {:keys [plot-obj point-size] :or {point-size 2}}]
+  (let [xs (range n)
+        ys' (take n ys)
+        scp (or plot-obj (ich/scatter-plot xs ys'))]
+    (ich/set-point-size scp point-size)
+    (ic/view scp)
+    scp))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
